@@ -13,6 +13,7 @@ import property.pal.bacolod.model.Unit;
 import property.pal.bacolod.model.Guest;
 import property.pal.bacolod.repository.UnitRepository;
 import property.pal.bacolod.repository.GuestRepository;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -49,7 +50,8 @@ public class BookingController {
         booking.setCheckOutDate(bookingDto.checkOutDate);
         booking.setTotalPrice(bookingDto.totalPrice);
         booking.setStatus(bookingDto.status);
-        booking.setCreatedAt(bookingDto.createdAt);
+        // Set createdAt to now if not provided
+        booking.setCreatedAt(bookingDto.createdAt != null ? bookingDto.createdAt : LocalDateTime.now());
 
         Booking saved = bookingService.create(booking);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
